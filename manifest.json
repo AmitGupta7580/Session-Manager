@@ -1,0 +1,29 @@
+{
+    "name": "Session Manager",
+    "description": "The purpose of this Extension is to save different sessions for different websites.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+		"cookies",
+		"tabs",
+		"storage"
+	],
+    "optional_permissions": [
+        "unlimitedStorage"
+    ],
+    "host_permissions": [
+        "*://*/*"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "96": "/images/lock-96.png"
+        }
+    },
+    "icons": {
+        "96": "/images/lock-96.png"
+    }
+}
