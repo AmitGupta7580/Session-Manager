@@ -2,7 +2,6 @@ function get_unique_id() {
     return 'id' + (new Date()).getTime();
 }
 
-
 function sanity_check(text) {
     if(text === "" || text === undefined || text === null) {
         return false;

@@ -55,8 +55,10 @@ async function init() {
     });
     export_btn.addEventListener("click", async () => {
         let cookies = await list_cookies();
+        var id = get_unique_id();
         var session = {
             "session_name": "current_session",
+            "session_id": id,
             "cookies" : cookies
         };
         var data = JSON.stringify(session);
@@ -160,8 +162,10 @@ function render_sessions() {
 }
 
 async function add_session(session_name, cookies) {
+    var id = get_unique_id();
     sessions.push({
         "session_name": session_name,
+        "session_id": id,
         "cookies" : cookies
     });
     await update_storage();
