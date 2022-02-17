@@ -5,9 +5,9 @@ function sanity_check(text) {
     return true;
 }
 
-function get_url(url) {
-    console.log(url.split("/"));
-    return url;
+function get_host(url) {
+    var host = url.split("/")[2];
+    return host;
 }
 
 function valid_json(payload) {

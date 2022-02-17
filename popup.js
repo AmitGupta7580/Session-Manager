@@ -6,17 +6,17 @@ let logout_btn = document.getElementById("logout-sessions");
 let import_btn = document.getElementById("import-sessions");
 let export_btn = document.getElementById("export-sessions");
 
-let tab, sessions = [], storeId = '0', baseUrl;
+let tab, sessions = [], storeId = '0', host;
 
 init();
 
 async function init() {
     // current active tab
     [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    baseUrl = get_url(tab.url);
+    host = get_host(tab.url);
 
     let url_heading = document.getElementById("url");
-    url_heading.appendChild(document.createTextNode(`${baseUrl}`));
+    url_heading.appendChild(document.createTextNode(`${host}`));
 
     // cookie-stores
     let stores = await chrome.cookies.getAllCookieStores();
@@ -25,9 +25,9 @@ async function init() {
     }
 
     // stored session corrosponding to current website
-    let items = await chrome.storage.local.get(baseUrl);
-    if(valid_json(items[tab.url])){
-        sessions = JSON.parse(items[tab.url]).sessions;
+    let items = await chrome.storage.local.get(host);
+    if(valid_json(items[host])){
+        sessions = JSON.parse(items[host]).sessions;
     }
 
     // listner for save new session
@@ -132,8 +132,8 @@ function render_sessions() {
     else {
         var div = document.createElement("div");
         div.setAttribute("class", "session");
-        div.setAttribute("style", "background-color: #dfdfdf;");
-        var text = document.createTextNode(`No Saved Sessions found for ${baseUrl}`);
+        div.setAttribute("style", "background-color: #dfdfdf; display: flex; justify-content: center;");
+        var text = document.createTextNode("No Saved Sessions found");
         div.appendChild(text);
         sessions_list.appendChild(div);
     }
@@ -192,7 +192,7 @@ async function clear_all_sessions() {
 
 async function update_storage() {
     var data = {};
-    data[tab.url] = JSON.stringify({
+    data[host] = JSON.stringify({
         "sessions": sessions
     })
     await chrome.storage.local.set(data);
