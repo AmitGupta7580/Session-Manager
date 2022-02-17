@@ -23,6 +23,13 @@ function valid_json(payload) {
     }
 }
 
+function valid_session(session) {
+    if(!session.hasOwnProperty('session_id')){
+        return false;
+    }
+    return true;
+}
+
 function filter_cookies(cookies) {
     for(var i=0;i<cookies.length;i++){
         const cookie = cookies[i];

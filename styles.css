@@ -77,3 +77,10 @@ body {
     display: flex;
     justify-content: center;
 }
+
+#logger {
+    margin-top: 5px;
+    color: red;
+    display: flex;
+    justify-content: center;
+}

@@ -5,6 +5,7 @@ let clear_sessions_btn = document.getElementById("delete-all-sessions");
 let logout_btn = document.getElementById("logout-sessions");
 let import_btn = document.getElementById("import-session");
 let export_btn = document.getElementById("export-session");
+let import_file = document.getElementById("importOrig");
 
 let tab, sessions = [], storeId = '0', host;
 
@@ -43,15 +44,16 @@ async function init() {
 
     clear_sessions_btn.addEventListener("click", async () => {
         clear_all_sessions();
+        log(`All Sessions deleted`, "green");
     });
 
     logout_btn.addEventListener("click", async () => {
         await logout_sessions();
         reload();
     });
-
-    import_btn.addEventListener("click", async () => {
-        console.log("import session");
+    import_file.addEventListener("change", import_session, false);
+    import_btn.addEventListener("click", async (e) => {
+        import_file.click();
     });
     export_btn.addEventListener("click", async () => {
         let cookies = await list_cookies();
@@ -169,14 +171,17 @@ async function add_session(session_name, cookies) {
         "cookies" : cookies
     });
     await update_storage();
+    log(`${session_name} Added`, "green");
 }
 
 async function delete_session(session_id) {
     sessions.splice(parseInt(session_id), 1);
     await update_storage();
+    log(`Session ${session_id + 1} deleted`, "green");
 }
 
 async function restore_sessions(session_id) {
+    log(`Session ${session_id + 1} Restoring ...`, "orange");
     const cookies = sessions[parseInt(session_id)].cookies;
     for(var i=0;i<cookies.length;i++){
         const cookie = cookies[i];
@@ -196,9 +201,11 @@ async function restore_sessions(session_id) {
             value: cookie.value,
         });
     }
+    log(`Session ${session_id + 1} restored`, "green");
 }
 
 async function logout_sessions() {
+    log("Logging out from all the sessions ...", "orange");
     const cookies = await list_cookies();
     for(var i=0;i<cookies.length;i++){
         const cookie = cookies[i];
@@ -207,11 +214,34 @@ async function logout_sessions() {
             url: tab.url,
         });
     }
+    log("Logged out from all the sessions", "green");
 }
 
 async function clear_all_sessions() {
     sessions = [];
     await update_storage();
+}
+
+async function import_session(e) {
+    var files = e.target.files, reader = new FileReader();
+    reader.onload = async (data) => {
+        var data = data.target.result;
+        if(valid_json(data)){
+            var session = JSON.parse(data);
+            if(valid_session(session)){
+                sessions.push(session);
+                await update_storage();
+                render_sessions();
+                log(`${session.session_name} Imported successfully`, "green");
+            } else {
+                log("Invalid Import file", "red");
+            }
+        } else {
+            log("Invalid Import file", "red");
+        }
+        importOrig.value = '';
+    };
+    reader.readAsText(files[0]);
 }
 
 async function update_storage() {
@@ -232,8 +262,8 @@ function reload() {
     chrome.tabs.reload(tab.id);
 }
 
-function log(text) {
-    console.log(text);
+function log(text, color) {
     let logger = document.getElementById("logger");
+    logger.setAttribute("style", `color: ${color};`)
     logger.innerHTML = text;
 }
