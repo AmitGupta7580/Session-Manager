@@ -4,11 +4,19 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <input id="session-name" type="text" placeholder="Enter you session Name">
-    <button id="save-session">Save Session</button>
-    <ul id="sessions-list"></ul> <!-- Build by JS -->
-    <button id="clear-all-sessions">Clear All Sessions</button> 
-    <button id="logout-sessions">Logout Sessions</button> 
+    <div id="save">
+      <input id="session-name" type="text" placeholder="Enter you session Name" style="flex-grow: 100;">
+      <button class="button button1" id="save-session">Save Session</button>
+    </div>
+    <div id="list">
+       <!-- Build by JS -->
+    </div>
+    <div id="external-btns">
+      <button class="button button3" id="delete-all-sessions">Clear All Sessions</button>
+      <button class="button button3" id="logout-sessions">Logout Sessions</button>
+      <button class="button button6" id="import-sessions">Import Sessions</button>
+      <button class="button button6" id="export-sessions">Export Sessions</button>
+    </div>
     <p id="logger"></p>
     <script src="utils.js"></script>
     <script src="popup.js"></script>

@@ -9,11 +9,9 @@
     "permissions": [
 		"cookies",
 		"tabs",
-		"storage"
-	],
-    "optional_permissions": [
+		"storage",
         "unlimitedStorage"
-    ],
+	],
     "host_permissions": [
         "*://*/*"
     ],

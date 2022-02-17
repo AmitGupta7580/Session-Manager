@@ -1,7 +1,7 @@
 let save_btn = document.getElementById("save-session");
 let session_name_inp = document.getElementById("session-name");
-let sessions_list = document.getElementById("sessions-list");
-let clear_sessions_btn = document.getElementById("clear-all-sessions");
+let sessions_list = document.getElementById("list");
+let clear_sessions_btn = document.getElementById("delete-all-sessions");
 let logout_btn = document.getElementById("logout-sessions");
 
 let tab, sessions = [], storeId = '0', baseUrl;
@@ -11,8 +11,6 @@ init();
 async function init() {
     // current active tab
     [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    console.log(tab);
-
     baseUrl = get_url(tab.url);
 
     // cookie-stores
@@ -25,7 +23,6 @@ async function init() {
     let items = await chrome.storage.local.get(baseUrl);
     if(valid_json(items[tab.url])){
         sessions = JSON.parse(items[tab.url]).sessions;
-        console.log(sessions);
     }
 
     // listner for save new session
@@ -56,31 +53,40 @@ function render_sessions() {
         sessions_list.removeChild(sessions_list.firstChild);
     }
     /*
-    
-    <li>
-        <div style="display: flexbox">
-            session.sessionnaem
-            <button id={i} class="restore-session">Restore Session</button>
-        </div>
-    </li>
-
+    <ul id="sessions-list">
+        <li>
+            <div style="display: flexbox">
+                session.sessionname
+                <button id={i} class="restore-session">Restore Session</button>
+            </div>
+        </li>
+    <ul>
     */
     if(sessions.length !== 0){
         for(var i=0;i<sessions.length;i++){
             const idx = i;
             const session = sessions[idx];
 
-            var item = document.createElement("li");
             var div = document.createElement("div");
-            div.setAttribute("style", "display: flexbox;");
-            var heading = document.createTextNode(session.session_name);
+            div.setAttribute("class", "session");
+            switch(i%2){
+                case 0:
+                    div.setAttribute("style", "background-color: #dfdfdf;");
+                    break;
+                case 1:
+                    div.setAttribute("style", "background-color: #c2c2c2;");
+                    break;
+            }
+            var heading = document.createElement('div');
+            heading.setAttribute("class", "session-heading");
+            heading.appendChild(document.createTextNode(session.session_name));
             var res_btn = document.createElement("button");
             res_btn.setAttribute("id", idx);
-            res_btn.setAttribute("class", "restore-session");
+            res_btn.setAttribute("class", "restore-session button button2");
             var res_btn_text = document.createTextNode("Restore session");
             var del_btn = document.createElement("button");
             del_btn.setAttribute("id", idx);
-            del_btn.setAttribute("class", "delete-session");
+            del_btn.setAttribute("class", "delete-session button button3");
             var del_btn_text = document.createTextNode("Delete session");
 
             // add event listner to buttons
@@ -98,13 +104,17 @@ function render_sessions() {
             div.appendChild(heading);
             div.appendChild(res_btn);
             div.appendChild(del_btn);
-            item.appendChild(div);
 
-            sessions_list.appendChild(item);
+            sessions_list.appendChild(div);
         }
     }
     else {
-        log("No Saved Session found")
+        var div = document.createElement("div");
+        div.setAttribute("class", "session");
+        div.setAttribute("style", "background-color: #dfdfdf;");
+        var text = document.createTextNode(`No Saved Sessions found for ${baseUrl}`);
+        div.appendChild(text);
+        sessions_list.appendChild(div);
     }
 }
 
