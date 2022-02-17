@@ -3,6 +3,8 @@ let session_name_inp = document.getElementById("session-name");
 let sessions_list = document.getElementById("list");
 let clear_sessions_btn = document.getElementById("delete-all-sessions");
 let logout_btn = document.getElementById("logout-sessions");
+let import_btn = document.getElementById("import-sessions");
+let export_btn = document.getElementById("export-sessions");
 
 let tab, sessions = [], storeId = '0', baseUrl;
 
@@ -12,6 +14,9 @@ async function init() {
     // current active tab
     [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     baseUrl = get_url(tab.url);
+
+    let url_heading = document.getElementById("url");
+    url_heading.appendChild(document.createTextNode(`${baseUrl}`));
 
     // cookie-stores
     let stores = await chrome.cookies.getAllCookieStores();
@@ -43,6 +48,13 @@ async function init() {
     logout_btn.addEventListener("click", async () => {
         await logout_sessions();
         reload();
+    });
+
+    import_btn.addEventListener("click", async () => {
+        console.log("import session");
+    });
+    export_btn.addEventListener("click", async () => {
+        console.log("export session");
     });
     
     render_sessions();
@@ -84,6 +96,10 @@ function render_sessions() {
             res_btn.setAttribute("id", idx);
             res_btn.setAttribute("class", "restore-session button button2");
             var res_btn_text = document.createTextNode("Restore session");
+            var ext_btn = document.createElement("button");
+            ext_btn.setAttribute("id", idx);
+            ext_btn.setAttribute("class", "export-session button button5");
+            var ext_btn_text = document.createTextNode("Export session");
             var del_btn = document.createElement("button");
             del_btn.setAttribute("id", idx);
             del_btn.setAttribute("class", "delete-session button button3");
@@ -94,15 +110,20 @@ function render_sessions() {
                 await restore_sessions(idx);
                 reload();
             });
+            ext_btn.addEventListener("click", async () => {
+                console.log(`export session no. ${idx}`);
+            });
             del_btn.addEventListener("click", async () => {
                 console.log(idx);
                 delete_session(idx);
             })
             
             res_btn.appendChild(res_btn_text);
+            ext_btn.appendChild(ext_btn_text);
             del_btn.appendChild(del_btn_text);
             div.appendChild(heading);
             div.appendChild(res_btn);
+            div.appendChild(ext_btn);
             div.appendChild(del_btn);
 
             sessions_list.appendChild(div);

@@ -5,17 +5,18 @@
   </head>
   <body>
     <div id="save">
-      <input id="session-name" type="text" placeholder="Enter you session Name" style="flex-grow: 100;">
+      <input id="session-name" type="text" placeholder="Enter you session Name" style="flex-grow: 100; padding-left: 10px;">
       <button class="button button1" id="save-session">Save Session</button>
     </div>
+    <div id="url"></div>
     <div id="list">
        <!-- Build by JS -->
     </div>
     <div id="external-btns">
-      <button class="button button3" id="delete-all-sessions">Clear All Sessions</button>
+      <button class="button button3" id="delete-all-sessions">Delete All Sessions</button>
       <button class="button button3" id="logout-sessions">Logout Sessions</button>
-      <button class="button button6" id="import-sessions">Import Sessions</button>
-      <button class="button button6" id="export-sessions">Export Sessions</button>
+      <button class="button button4" id="import-sessions">Import Session</button>
+      <button class="button button5" id="export-sessions">Export Current Session</button>
     </div>
     <p id="logger"></p>
     <script src="utils.js"></script>

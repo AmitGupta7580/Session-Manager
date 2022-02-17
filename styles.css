@@ -1,5 +1,5 @@
 body {
-    width: 500px;
+    width: 600px;
     font-size: 16px;
 }
 
@@ -28,26 +28,26 @@ body {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 15px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     cursor: pointer;
 }
 
 .button1 {background-color: #4CAF50;} /* Green */
 .button2 {background-color: #008CBA;} /* Blue */
 .button3 {background-color: #f44336;} /* Red */
-.button4 {background-color: #e48169;} /* Redish-orange */
-.button5 {background-color: #f0a83d;} /* yellowish-orange */
-.button6 {background-color: #13e2fd;} /* yellowish-orange */
+.button4 {background-color: #f31e81;} /* yellowish-orange */
+.button5 {background-color: #8600c4;} /* yellowish-orange */
 
 #save {
     display: flex;
 }
 
-#session-name {
-    padding-left: 10px;
+#url {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }
 
 .session {
@@ -64,12 +64,8 @@ body {
     flex-grow: 100;
 }
 
-.delete-session {
-    margin-left: auto;
-}
-
 #list {
-    margin-top: 20px;
+    margin-top: 15px;
     margin-bottom: 20px;
     height: 200px;
     overflow-x: hidden;
@@ -80,8 +76,4 @@ body {
     margin-top: 10px;
     display: flex;
     justify-content: center;
-}
-
-#delete-all-sessions {
-    padding: 15px 25px;
 }
