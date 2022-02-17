@@ -3,8 +3,8 @@ let session_name_inp = document.getElementById("session-name");
 let sessions_list = document.getElementById("list");
 let clear_sessions_btn = document.getElementById("delete-all-sessions");
 let logout_btn = document.getElementById("logout-sessions");
-let import_btn = document.getElementById("import-sessions");
-let export_btn = document.getElementById("export-sessions");
+let import_btn = document.getElementById("import-session");
+let export_btn = document.getElementById("export-session");
 
 let tab, sessions = [], storeId = '0', host;
 
@@ -54,7 +54,19 @@ async function init() {
         console.log("import session");
     });
     export_btn.addEventListener("click", async () => {
-        console.log("export session");
+        let cookies = await list_cookies();
+        var session = {
+            "session_name": "current_session",
+            "cookies" : cookies
+        };
+        var data = JSON.stringify(session);
+        var vLink = document.createElement('a');
+        vBlob = new Blob([data], {type: "octet/stream"}),
+        vName = 'session.json',
+        vUrl = window.URL.createObjectURL(vBlob);
+        vLink.setAttribute('href', vUrl);
+        vLink.setAttribute('download', vName);
+        vLink.click();
     });
     
     render_sessions();
@@ -111,7 +123,15 @@ function render_sessions() {
                 reload();
             });
             ext_btn.addEventListener("click", async () => {
-                console.log(`export session no. ${idx}`);
+                var session = sessions[parseInt(idx)];
+                var data = JSON.stringify(session);
+                var vLink = document.createElement('a');
+                vBlob = new Blob([data], {type: "octet/stream"}),
+                vName = `${session.session_name}.json`,
+                vUrl = window.URL.createObjectURL(vBlob);
+                vLink.setAttribute('href', vUrl);
+                vLink.setAttribute('download', vName);
+                vLink.click();
             });
             del_btn.addEventListener("click", async () => {
                 console.log(idx);
